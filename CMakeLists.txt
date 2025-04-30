@@ -43,7 +43,6 @@ FetchContent_Declare(
   GIT_TAG v1.16.0
 )
 
-# ==== Header-only library used to load images ==== #
 FetchContent_Declare(
     stb
     GIT_REPOSITORY https://github.com/nothings/stb.git

@@ -232,7 +232,7 @@ endif()
 # Create coverage target
 add_custom_target(coverage_report
     ALL
-    COMMAND ${PROJECT_BINARY_DIR}/bin/modularml_tests
+    COMMAND cd ${PROJECT_BINARY_DIR} && ctest -V
     COMMAND ${GCOVR_EXECUTABLE} ${PROJECT_BINARY_DIR}/CMakeFiles/modularml_tests.dir/tests -r ${PROJECT_SOURCE_DIR}/src --html --html-details --csv -o ${PROJECT_BINARY_DIR}/coverage_report/
 )
 

@@ -55,9 +55,6 @@ FetchContent_MakeAvailable(stb googletest nlohmann_json)
 set(PROJECT_DEPS ${PROJECT_BINARY_DIR}/_deps)
 
 # ------------------- Binary ------------------------------- #
-# Use max 8 threads for building, improve build times
-find_package(Threads REQUIRED)
-set(CMAKE_BUILD_PARALLEL_LEVEL 8) 
 
 # Binary output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
@@ -166,6 +163,22 @@ gtest_discover_tests(
     DISCOVERY_MODE POST_BUILD
 )
 
+# --------------------- Multi-threading build & test -------- #
+
+include(ProcessorCount)
+ProcessorCount(N)
+if(NOT N EQUAL 0)
+  set(CTEST_BUILD_FLAGS -j${N})
+  set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${N})
+  message(STATUS "Using ${N} processors for testing")
+endif()
+
+find_package(Threads)
+if (Threads_FOUND)
+    set(CMAKE_BUILD_PARALLEL_LEVEL ${N})
+    message(STATUS "Using ${CMAKE_BUILD_PARALLEL_LEVEL} parallel jobs for building")
+endif()
+
 # ------------------- GEMM & Optimizations ----------------- #
 option(ALIGN_TENSORS "Enable alignment for tensor data for better performance" ON)
 option(USE_BLOCKED_GEMM "Use blocked GEMM implementation" OFF)
@@ -232,7 +245,7 @@ endif()
 # Create coverage target
 add_custom_target(coverage_report
     ALL
-    COMMAND cd ${PROJECT_BINARY_DIR} && ctest -V
+    COMMAND cd ${PROJECT_BINARY_DIR} && ctest -V -j ${N}
     COMMAND ${GCOVR_EXECUTABLE} ${PROJECT_BINARY_DIR}/CMakeFiles/modularml_tests.dir/tests -r ${PROJECT_SOURCE_DIR}/src --html --html-details --csv -o ${PROJECT_BINARY_DIR}/coverage_report/
 )
 

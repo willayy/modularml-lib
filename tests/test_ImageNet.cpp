@@ -121,9 +121,9 @@ std::pair<size_t, size_t> imageNet(const size_t startingindex, const size_t endi
 
   size_t success = 0;
   size_t failure = 0;
-  std::string imagePath = "../tests/data/imagenet/images/";
+  std::string imagePath = "data/imagenet/images/";
   std::string labelPath =
-      "../tests/data/imagenet/ILSVRC2012_validation_ground_truth.json";
+      "data/imagenet/ILSVRC2012_validation_ground_truth.json";
   std::shared_ptr<ImageLoader> loader = std::make_shared<ImageLoader>();
   Parser_mml parser;
   imageResizeAndCropper resizer_and_cropper;
@@ -204,7 +204,7 @@ std::pair<size_t, size_t> imageNet(const size_t startingindex, const size_t endi
 }
 
 TEST(test_get_caffe_label, get_caffe_label) {
-  std::string labelPath = "../tests/data/imagenet/ILSVRC2012_validation_ground_truth.json";
+  std::string labelPath = "data/imagenet/ILSVRC2012_validation_ground_truth.json";
   auto label1 = "ILSVRC2012_val_" + padNumber(1) + ".JPEG";
   auto label2 = "ILSVRC2012_val_" + padNumber(2) + ".JPEG";
 

@@ -20,7 +20,7 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 # Check if GCC is the compiler
 if(NOT (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
-    message(WARNING "WARNING: This project recommends GCC or Clang as the compiler.")
+    message(WARNING "WARNING: This project recommends GCC or AppleClang as the compiler.")
 endif()
 
 # Check if system is UNIX
@@ -40,7 +40,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG v1.16.0
+  GIT_TAG v1.17.0
 )
 
 FetchContent_Declare(
@@ -74,9 +74,6 @@ set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 # Set the test directory
 set(TEST_DIR ${PROJECT_SOURCE_DIR}/tests)
 
-# include the headers
-include_directories(${INCLUDE_DIR})
-
 # Glob all source files
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp ${SRC_DIR}/*.tpp)
 
@@ -94,17 +91,18 @@ add_library(
     ${HEADERS}
 )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json::nlohmann_json)
+# include the headers
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR} ${PROJECT_BINARY_DIR}/_deps/stb-src)
 
-target_include_directories(
-    ${PROJECT_NAME}
-    PUBLIC
-    ${CMAKE_BINARY_DIR}/_deps/stb-src
-)
+# Link the library with the main project
+target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json::nlohmann_json)
 
 # ------------------- Testing ------------------------------ #
 
 enable_testing()
+
+# Working directory for tests
+set(WORKING_DIRECTORY_TESTS "${PROJECT_SOURCE_DIR}/tests")
 
 # Add the test executable
 add_executable(
@@ -155,13 +153,18 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
 endif()
 
 # Link the test executable with the main project executable
-target_link_libraries(${PROJECT_NAME}_tests PRIVATE ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}_tests PUBLIC ${PROJECT_NAME})
+
 # Link gtest
-target_link_libraries(${PROJECT_NAME}_tests PRIVATE GTest::gtest_main)
+target_link_libraries(${PROJECT_NAME}_tests PUBLIC GTest::gtest_main GTest::gtest)
 
 # Add the test to gtest
 include(GoogleTest)
-gtest_discover_tests(${PROJECT_NAME}_tests DISCOVERY_MODE POST_BUILD)
+gtest_discover_tests(
+    ${PROJECT_NAME}_tests
+    WORKING_DIRECTORY ${WORKING_DIRECTORY_TESTS}
+    DISCOVERY_MODE POST_BUILD
+)
 
 # ------------------- GEMM & Optimizations ----------------- #
 option(ALIGN_TENSORS "Enable alignment for tensor data for better performance" ON)
@@ -179,19 +182,19 @@ elseif (USE_AVX_GEMM)
     SET(MEMORY_ALIGNMENT 32)
     add_definitions(-DUSE_AVX_GEMM)
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(${PROJECT_NAME} PRIVATE -mavx2 -mfma)
-        target_compile_options(${PROJECT_NAME}_tests PRIVATE -mavx2 -mfma)
+        target_compile_options(${PROJECT_NAME} PUBLIC -mavx2 -mfma)
+        target_compile_options(${PROJECT_NAME}_tests PUBLIC -mavx2 -mfma)
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-        target_compile_options(${PROJECT_NAME} PRIVATE -/arch:AVX2)
-        target_compile_options(${PROJECT_NAME}_tests PRIVATE -/arch:AVX2)
+        target_compile_options(${PROJECT_NAME} PUBLIC -/arch:AVX2)
+        target_compile_options(${PROJECT_NAME}_tests PUBLIC -/arch:AVX2)
     endif()
 elseif (USE_AVX512_GEMM)
     message(STATUS "Using AVX512 GEMM implementation")
     SET(MEMORY_ALIGNMENT 64)
     add_definitions(-DUSE_AVX512_GEMM)
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(${PROJECT_NAME} PRIVATE -mavx512f -mavx512vl -mavx512dq -mavx512bw)
-        target_compile_options(${PROJECT_NAME}_tests PRIVATE -mavx512f -mavx512vl -mavx512dq -mavx512bw)
+        target_compile_options(${PROJECT_NAME} PUBLIC -mavx512f -mavx512vl -mavx512dq -mavx512bw)
+        target_compile_options(${PROJECT_NAME}_tests PUBLIC -mavx512f -mavx512vl -mavx512dq -mavx512bw)
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
         add_compile_options(/arch:AVX2)
     endif()
@@ -199,13 +202,13 @@ elseif (USE_OPENBLAS_GEMM)
     message(STATUS "Using OpenBLAS GEMM implementation")
     SET(MEMORY_ALIGNMENT 64)
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(${PROJECT_NAME} PRIVATE -march=native)
-        target_compile_options(${PROJECT_NAME}_tests PRIVATE -march=native)
+        target_compile_options(${PROJECT_NAME} PUBLIC -march=native)
+        target_compile_options(${PROJECT_NAME}_tests PUBLIC -march=native)
     endif()
     add_definitions(-DUSE_OPENBLAS_GEMM)
     find_package(BLAS REQUIRED) 
     message(STATUS "Found BLAS libraries at ${BLAS_LIBRARIES}")
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${BLAS_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${BLAS_LIBRARIES})
 else()
     message(STATUS "Using default GEMM implementation")
     SET(MEMORY_ALIGNMENT 16)
@@ -215,10 +218,10 @@ endif()
 # ------------------- Coverage (gcovr) ---------------------- #
 
 find_program(GCOVR_EXECUTABLE gcovr)
-if(NOT GCOVR_EXECUTABLE)
-    message(WARNING "gcovr not found. Skipping coverage report.")
-else()
+if(GCOVR_EXECUTABLE)
     message(STATUS "gcovr found at ${GCOVR_EXECUTABLE}")
+else()
+    message(WARNING "gcovr not found. Skipping coverage report.")
 endif()
 
 # If on MacOS, gcovr --gcov-executable gcov-14
@@ -228,6 +231,7 @@ endif()
 
 # Create coverage target
 add_custom_target(coverage_report
+    ALL
     COMMAND ${PROJECT_BINARY_DIR}/bin/modularml_tests
     COMMAND ${GCOVR_EXECUTABLE} ${PROJECT_BINARY_DIR}/CMakeFiles/modularml_tests.dir/tests -r ${PROJECT_SOURCE_DIR}/src --html --html-details --csv -o ${PROJECT_BINARY_DIR}/coverage_report/
 )
@@ -265,6 +269,7 @@ set(DOXYGEN_EXCLUDE_PATTERNS ${PROJECT_DEPS}/*)
 
 # Create a custom target to generate docs
 add_custom_target(docs
+    ALL
     COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIRECTORY}
     COMMAND doxygen ${PROJECT_SOURCE_DIR}/Doxyfile
     COMMENT "Generating Doxygen documentation"
@@ -313,3 +318,4 @@ get_target_property(MODULARML_FLAGS modularml COMPILE_OPTIONS)
 message(STATUS "CMake compiler flags (modularml): ${MODULARML_FLAGS}")
 get_target_property(MODULARML_TEST_FLAGS modularml_tests COMPILE_OPTIONS)
 message(STATUS "CMake compiler flags (modularml_tests): ${MODULARML_TEST_FLAGS}")
+message(STATUS "modularml_test working directory: ${WORKING_DIRECTORY_TESTS}")

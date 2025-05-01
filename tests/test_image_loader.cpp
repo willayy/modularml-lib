@@ -8,7 +8,7 @@
 namespace fs = std::filesystem;
 
 TEST(test_image_loader, load_mnist_image_jpg_test) {
-    const ImageLoaderConfig config("../tests/data/mnist_5.jpg");
+    const ImageLoaderConfig config("data/mnist_5.jpg");
     ImageLoader loader;
 
     auto image_tensor = loader.load(config);
@@ -19,7 +19,7 @@ TEST(test_image_loader, load_mnist_image_jpg_test) {
 }
 
 TEST(test_image_loader, load_rgb_image_png_test) {
-    const ImageLoaderConfig config("../tests/data/rgb_test.png");
+    const ImageLoaderConfig config("data/rgb_test.png");
     ImageLoader loader;
 
     auto image_tensor = loader.load(config);
@@ -30,7 +30,7 @@ TEST(test_image_loader, load_rgb_image_png_test) {
 }
 
 TEST(test_image_loader, load_jpeg_image) {
-    const ImageLoaderConfig config("../tests/data/alps.JPEG");
+    const ImageLoaderConfig config("data/alps.JPEG");
     ImageLoader loader;
 
     auto image_tensor = loader.load(config);

@@ -17,8 +17,8 @@
 #define PREDICTED_CLASS_ALEX 735
 
 TEST(test_parser_model, test_parsing_and_running_model) {
-    std::ifstream file("../test.json");
-    ASSERT_TRUE(file.is_open()) << "Failed to open test.json file";
+  std::ifstream file("data/simple-test-model/test.json");
+  ASSERT_TRUE(file.is_open()) << "Failed to open test.json file";
 
   nlohmann::json onnx_model;
   file >> onnx_model;
@@ -76,7 +76,7 @@ TEST(test_parser_model, test_parsing_and_running_model) {
 }
 
 TEST(test_parser_model, test_parsing_and_running_lenet) {
-  std::ifstream file("../lenet.json");
+  std::ifstream file("data/lenet/lenet.json");
   ASSERT_TRUE(file.is_open()) << "Failed to open lenet.json file";
 
   nlohmann::json onnx_model;
@@ -122,10 +122,10 @@ TEST(test_parser_model, test_parsing_and_running_lenet) {
 }
 
 TEST(test_parser_model, test_parsing_and_running_alexnet) {
-    std::ifstream file("../alexnet.json");
-    if (!file.is_open()) {
-        GTEST_SKIP() << "Skipping test as alexnet.json file is not found";
-    }
+  std::ifstream file("data/alexnet/alexnet.json");
+  if (!file.is_open()) {
+    GTEST_SKIP() << "Skipping test as alexnet.json file is not found";
+  }
 
     nlohmann::json onnx_model;
     file >> onnx_model;
@@ -165,8 +165,6 @@ TEST(test_parser_model, test_parsing_and_running_alexnet) {
 
     auto expected_output_tensor = TensorFactory::create_tensor<float>({OUTPUT_TENSOR_SHAPE_ALEX}, {OUTPUT_TENSOR_DATA_ALEX});
 
-
-    //ASSERT_TRUE(tensors_are_close(*output_tensor, *expected_output_tensor, 0.0125f));
     int max_index = TensorOperations::arg_max<float>(output_tensor);
     ASSERT_TRUE(max_index == PREDICTED_CLASS_ALEX);
 }

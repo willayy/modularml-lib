@@ -11,7 +11,7 @@ include(FetchContent)
 FetchContent_Declare(
     modularml
     GIT_REPOSITORY https://github.com/willayy/modularml-lib
-    GIT_TAG        main
+    GIT_TAG        <use latest release tag>
 )
 FetchContent_MakeAvailable(modularml)
 target_link_libraries(MyProject PRIVATE modularml)

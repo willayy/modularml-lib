@@ -90,8 +90,8 @@ add_library(
 
 # include the headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/_deps/stb-src)
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/_deps/nlohmann_json/single_include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${stb_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${nlohmann_json_SOURCE_DIR}/single_include)
 
 # Link the library with the main project
 target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json::nlohmann_json)

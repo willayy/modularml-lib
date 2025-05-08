@@ -208,7 +208,7 @@ std::pair<size_t, size_t> imageNet(
   return {success, failure};
 }
 
-TEST(test_get_caffe_label, get_caffe_label) {
+TEST(test_imageNet, get_caffe_label) {
   std::string labelPath =
       "data/imagenet/ILSVRC2012_validation_ground_truth.json";
   auto label1 = "ILSVRC2012_val_" + padNumber(1) + ".JPEG";

@@ -15,7 +15,7 @@
  * @tparam InputT The data type of the input tensor elements
  * @tparam OutputT The data type of the output tensor elements after
  * normalization
- * @author Måns Bremer (@Breman402)
+ * @author Måns Bremer
  */
 template <typename InputT, typename OutputT>
 class Normalizer {

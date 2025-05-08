@@ -11,19 +11,36 @@
  */
 class ImageLoader : public DataLoader<float> {
  public:
-  
   /**
    * @struct RawImageBuffer
-   * @brief Represents a raw image buffer containing image data and its properties.
+   * @brief Represents a raw image buffer containing image data and its
+   * properties.
    *
    * This structure is used to store the raw pixel data of an image along with
    * its dimensions and the number of color channels.
    *
+   * @param data A shared pointer to the raw image data (unsigned char).
+   * @param width The width of the image in pixels.
+   * @param height The height of the image in pixels.
+   * @param channels The number of color channels in the image (e.g., 3 for
+   * RGB).
    */
   struct RawImageBuffer {
+    /**
+     * @brief A shared pointer to the raw image data (unsigned char).
+     */
     std::shared_ptr<unsigned char> data;
+    /**
+     * @brief The width of the image in pixels.
+     */
     int width;
+    /**
+     * @brief The height of the image in pixels.
+     */
     int height;
+    /**
+     * @brief The number of color channels in the image (e.g., 3 for RGB).
+     */
     int channels;
   };
 

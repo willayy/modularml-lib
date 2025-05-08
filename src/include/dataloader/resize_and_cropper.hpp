@@ -11,7 +11,7 @@
  * configuration parameters. It returns image buffers using shared pointers,
  * ensuring automatic memory management and safe ownership transfer.
  *
- * @author Måns Bremer (@Breman402)
+ * @author Måns Bremer
  */
 class imageResizeAndCropper : public resizeAndCrop {
  public:

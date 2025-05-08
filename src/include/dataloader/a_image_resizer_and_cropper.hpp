@@ -13,7 +13,7 @@
  * It uses shared pointers for automatic and safe memory management of image
  * buffers. Derived classes must implement both methods.
  *
- * @author Måns Bremer (@Breman402)
+ * @author Måns Bremer
  */
 class resizeAndCrop {
  public:

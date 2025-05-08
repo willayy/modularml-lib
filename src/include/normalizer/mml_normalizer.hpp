@@ -13,7 +13,7 @@
  * preprocessing step in machine learning pipelines, particularly for image
  * data.
  *
- * @author Måns Bremer (@Breman402)
+ * @author Måns Bremer
  */
 class Normalizer_mml : public Normalizer<float, float> {
  public:

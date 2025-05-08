@@ -24,6 +24,7 @@
 #include "tensor_concept.hpp"
 
 /*!
+ * @class Tensor_mml
  * @brief A Tensor<T> implementation using an underlying
  * fixed size 1D array with row-major offsets for
  * multi-dimensional indexing.
@@ -103,6 +104,10 @@ class Tensor_mml : public Tensor<T> {
   /// @return The data of the tensor.
   const array_mml<T> &get_data() const;
 
+  /// @brief Get the offsets of the tensor.
+  /// @return The offsets of the tensor.
+  const array_mml<size_t> &get_offsets() const;
+
   /// Ovveridden methods from the base class
   Tensor<T> &operator=(const Tensor<T> &other) override;
   Tensor<T> &operator=(Tensor<T> &&other) noexcept override;
@@ -117,7 +122,6 @@ class Tensor_mml : public Tensor<T> {
   bool is_matrix() const override;
   bool operator==(const Tensor<T> &other) const override;
   const array_mml<size_t> &get_shape() const override;
-  const array_mml<size_t> &get_offsets() const;
   size_t get_size() const override;
   const T &operator[](array_mml<size_t> &indices) const override;
   T &operator[](array_mml<size_t> &indices) override;

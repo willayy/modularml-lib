@@ -8,12 +8,32 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
+/**
+ * @class AddNode
+ * @brief A class representing an addition operation node in a computational
+ * graph.
+ *
+ * This class inherits from the Node class and represents the element-wise
+ * addition of two tensors in a computational graph. It performs the forward
+ * pass computation by adding the elements of two input tensors and storing the
+ * result in an output tensor. It supports broadcasting for tensors with
+ * compatible shapes.
+ */
 class AddNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in addition operations
+   */
   using T = std::variant<double, float, int32_t, int64_t>;
-  using TensorT =
-      TensorVariant<T>;  // Gets std::variant<std::shared_ptr<tensor<T>>,
-                         // ...> from T
+
+  /**
+   * @typedef TensorT
+   * @brief Type alias for shared pointers to tensors with supported types
+   *
+   * Gets std::variant<std::shared_ptr<tensor<T>>, ...> from T
+   */
+  using TensorT = TensorVariant<T>;
 
   /**
    * @brief Constructor for AddNode.
@@ -63,7 +83,9 @@ class AddNode : public Node {
    * Likely only temporary to be replaced with something that can be used in
    * multiple nodes instead.
    *
-   * @return The output data.
+   * @param a_ptr Shared pointer to the first input tensor
+   * @param b_ptr Shared pointer to the second input tensor
+   * @param c_ptr Shared pointer to the output tensor
    */
   void broadcast_addition(const TensorT &a_ptr, const TensorT &b_ptr,
                           const TensorT &c_ptr) const;

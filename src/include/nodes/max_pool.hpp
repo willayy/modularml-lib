@@ -11,8 +11,17 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
+/**
+ * @class MaxPoolNode
+ * @brief Class representing a Max Pooling operation in a computational graph.
+ */
 class MaxPoolNode : public Node {
  public:
+
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in MaxPool operations
+   */
   using T = std::variant<float, double, int8_t, uint8_t>;
 
   /**
@@ -24,6 +33,7 @@ class MaxPoolNode : public Node {
    * @param auto_pad Padding type (default: "NOTSET").
    * @param ceil_mode Ceil mode (default: 0).
    * @param kernel_shape Kernel shape.
+   * @param dilations Dilation values.
    * @param pads Padding values.
    * @param storage_order Storage order (default: 0).
    * @param strides Stride values.

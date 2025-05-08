@@ -65,13 +65,23 @@ template <typename Variant>
 struct TensorVariantMaker;
 
 /**
- * @struct TensorVariantMaker
- * @brief Specialization for creating variants of tensor shared pointers.
+ * @struct TensorVariantMaker<std::variant<Ts...>>
+ * @brief Specialization of TensorVariantMaker for std::variant.
  *
- * @tparam Ts The types in the original variant
+ * This specialization creates a variant of shared pointers to Tensor objects
+ * for each type in the parameter pack Ts.
+ *
+ * @tparam Ts Parameter pack of numeric types supported in the variant
  */
 template <typename... Ts>
 struct TensorVariantMaker<std::variant<Ts...>> {
+  /**
+   * @typedef type
+   * @brief The created variant type containing shared pointers to tensors
+   *
+   * Creates a std::variant of shared pointers to Tensor objects for each type
+   * in Ts
+   */
   using type = std::variant<std::shared_ptr<Tensor<Ts>>...>;
 };
 

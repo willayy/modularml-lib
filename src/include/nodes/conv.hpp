@@ -21,7 +21,18 @@
  */
 class ConvNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in convolution operations
+   */
   using T = std::variant<double, float>;
+
+  /**
+   * @typedef TensorT
+   * @brief Type alias for shared pointers to tensors with supported types
+   *
+   * Creates a variant of shared pointers to tensors for each supported type
+   */
   using TensorT =
       TensorVariant<T>;  // Gets std::variant<std::shared_ptr<tensor<T>>,
                          // ...> from T

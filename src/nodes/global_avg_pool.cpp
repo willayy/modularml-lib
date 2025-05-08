@@ -16,7 +16,7 @@
 #include "nlohmann/json.hpp"
 #include "nodes/node_utils.hpp"
 
-GlobalAvgPoolNode::GlobalAvgPoolNode(std::string X, std::string Y)
+GlobalAvgPoolNode::GlobalAvgPoolNode(const std::string &X, const std::string &Y)
     : X(X), Y(Y) {}
 
 GlobalAvgPoolNode::GlobalAvgPoolNode(const nlohmann::json& node) {

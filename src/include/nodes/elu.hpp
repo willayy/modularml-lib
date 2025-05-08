@@ -6,7 +6,6 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
-
 /**
  * @class ELUNode
  * @brief A class that implements a tensor std::function for the ELU
@@ -14,6 +13,10 @@
  */
 class ELUNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported floating-point types in ELU operations
+   */
   using T = std::variant<float, double>;
 
   /**

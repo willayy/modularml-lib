@@ -1,11 +1,12 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <string>
 #include <variant>
 
-#include "nodes/a_node.hpp"
 #include "nlohmann/json_fwd.hpp"
+#include "nodes/a_node.hpp"
 
 /**
  * @class ReLUNode
@@ -16,7 +17,11 @@
  * pass computation applying ReLU elementwise.
  */
 class ReLUNode : public Node {
-public:
+ public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in ReLU operations
+   */
   using T = std::variant<double, float, int16_t, int32_t, int64_t, int8_t>;
   /**
    * @brief Constructor for ReLUNode.
@@ -37,8 +42,8 @@ public:
    * @brief Perform the forward pass computation using ReLU activation
    * std::function.
    */
-  void
-  forward(std::unordered_map<std::string, GeneralDataTypes> &iomap) override;
+  void forward(
+      std::unordered_map<std::string, GeneralDataTypes> &iomap) override;
 
   /**
    * @brief Get inputs.
@@ -54,7 +59,7 @@ public:
    */
   std::vector<std::string> getOutputs() override;
 
-private:
-  std::string X; // Input tensor X.
-  std::string Y; // Output tensor Y.
+ private:
+  std::string X;  // Input tensor X.
+  std::string Y;  // Output tensor Y.
 };

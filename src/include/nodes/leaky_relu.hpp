@@ -6,7 +6,6 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
-
 /**
  * @class LeakyReLUNode
  * @brief A class representing a LeakyReLU node in a computational graph.
@@ -17,6 +16,10 @@
  */
 class LeakyReLUNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in LeakyReLU operations
+   */
   using T = std::variant<float, double>;
 
   /**
@@ -26,7 +29,8 @@ class LeakyReLUNode : public Node {
    * @param Y Unique std::string key to the output tensor.
    * @param alpha Coefficient of leakage. Default = 0.01
    */
-  LeakyReLUNode(const std::string &X, const std::string &Y, float alpha = 0.01f);
+  LeakyReLUNode(const std::string &X, const std::string &Y,
+                float alpha = 0.01f);
 
   /**
    * @brief Constructor for LeakyReLUNode from JSON.

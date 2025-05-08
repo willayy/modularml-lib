@@ -373,50 +373,52 @@ std::shared_ptr<Tensor<T>> Tensor_mml<T>::transpose(
 };
 
 template <TensorConcept::Types T>
-std::shared_ptr<Tensor<T>>
-Tensor_mml<T>::transpose(
+std::shared_ptr<Tensor<T>> Tensor_mml<T>::transpose(
     const std::vector<int> &perm) const {
   if (perm.size() != this->shape.size()) {
-    throw std::invalid_argument("Transpose: perm size must be equal to tensor rank");
+    throw std::invalid_argument(
+        "Transpose: perm size must be equal to tensor rank");
   }
 
   // Checks that the perm vector is valid
   std::vector<bool> seen(perm.size(), false);
   for (size_t p : perm) {
     if (p >= perm.size() || seen[p]) {
-      throw std::invalid_argument("Transpose: invalid or duplicate entry in perm");
+      throw std::invalid_argument(
+          "Transpose: invalid or duplicate entry in perm");
     }
     seen[p] = true;
   }
 
   array_mml<size_t> new_shape(perm.size());
-  
+
   for (size_t i = 0; i < perm.size(); ++i) {
     size_t val = shape[perm[i]];
     new_shape[i] = val;
   }
 
   auto transposed = std::make_shared<Tensor_mml<T>>(new_shape);
-  // This recursive function remaps each element in the old tensor to the new permutation based in the perm vector
-  std::function<void(array_mml<size_t>&, size_t)> recurse;
-  recurse = [&](array_mml<size_t>& indices, size_t dim) {
+  // This recursive function remaps each element in the old tensor to the new
+  // permutation based in the perm vector
+  std::function<void(array_mml<size_t> &, size_t)> recurse;
+  recurse = [&](array_mml<size_t> &indices, size_t dim) {
     if (dim == shape.size()) {
       array_mml<size_t> transposed_indices(perm.size());
-  
+
       for (size_t i = 0; i < perm.size(); ++i) {
         if (perm[i] >= indices.size()) {
           std::cerr << "ERROR: perm[" << i << "] = " << perm[i]
-                    << " out of bounds for indices of size " << indices.size() << std::endl;
+                    << " out of bounds for indices of size " << indices.size()
+                    << std::endl;
           throw std::out_of_range("perm index out of bounds");
         }
         transposed_indices[i] = indices[perm[i]];
       }
 
-
       try {
         auto val = (*this)[indices];
         (*transposed)[transposed_indices] = val;
-      } catch (const std::exception& e) {
+      } catch (const std::exception &e) {
         std::cerr << "Exception accessing tensor at ";
         for (size_t idx : indices) std::cerr << idx << " ";
         std::cerr << " or transposed at ";
@@ -424,16 +426,15 @@ Tensor_mml<T>::transpose(
         std::cerr << ": " << e.what() << std::endl;
         throw;
       }
-  
+
       return;
     }
-  
+
     for (size_t i = 0; i < shape[dim]; ++i) {
       indices[dim] = i;
       recurse(indices, dim + 1);
     }
   };
-  
 
   array_mml<size_t> indices(shape.size());
   indices.fill(0);

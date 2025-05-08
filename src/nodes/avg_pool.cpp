@@ -12,15 +12,17 @@
 
 #include "datastructures/mml_array.hpp"
 #include "datastructures/tensor_factory.hpp"
-#include "operations/tensor_operations_module.hpp"
 #include "nlohmann/json.hpp"
 #include "nodes/node_utils.hpp"
+#include "operations/tensor_operations_module.hpp"
 
-AvgPoolNode::AvgPoolNode(const std::string &X, const std::string &Y,
-                         const std::vector<int> &kernel_shape, const std::string &auto_pad,
-                         int ceil_mode, int count_include_pad,
-                         const std::vector<int> &dilations, const std::vector<int> &pads,
-                         const std::vector<int> &strides)
+AvgPoolNode::AvgPoolNode(const std::string& X, const std::string& Y,
+                         const std::vector<int>& kernel_shape,
+                         const std::string& auto_pad, int ceil_mode,
+                         int count_include_pad,
+                         const std::vector<int>& dilations,
+                         const std::vector<int>& pads,
+                         const std::vector<int>& strides)
     : X(X),
       Y(Y),
       auto_pad(auto_pad),

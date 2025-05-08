@@ -6,7 +6,6 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
-
 /**
  * @class GeluNode
  * @brief A class representing a Gelu (Gaussian Error Linear Units) node in a
@@ -18,6 +17,10 @@
  */
 class GeluNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported floating-point types in GELU operations
+   */
   using T = std::variant<double, float>;
 
   /**
@@ -28,7 +31,8 @@ class GeluNode : public Node {
    * @param approximate Gelu approximation algorithm. Accepts 'std::tanh' and
    * 'none'. Default = 'none'.
    */
-  GeluNode(const std::string &X, const std::string &Y, const std::string &approximate = "none");
+  GeluNode(const std::string &X, const std::string &Y,
+           const std::string &approximate = "none");
 
   /**
    * @brief Constructor for GeluNode from JSON.

@@ -12,11 +12,11 @@
 
 #include "datastructures/mml_array.hpp"
 #include "datastructures/tensor_factory.hpp"
-#include "operations/tensor_operations_module.hpp"
 #include "nlohmann/json.hpp"
 #include "nodes/node_utils.hpp"
+#include "operations/tensor_operations_module.hpp"
 
-GlobalAvgPoolNode::GlobalAvgPoolNode(std::string X, std::string Y)
+GlobalAvgPoolNode::GlobalAvgPoolNode(const std::string& X, const std::string& Y)
     : X(X), Y(Y) {}
 
 GlobalAvgPoolNode::GlobalAvgPoolNode(const nlohmann::json& node) {
@@ -33,14 +33,16 @@ void GlobalAvgPoolNode::forward(
     std::unordered_map<std::string, GeneralDataTypes>& iomap) {
   auto x_it = iomap.find(X);
   if (x_it == iomap.end()) {
-    throw std::runtime_error("GlobalAvgPoolNode: Input tensor X not found in iomap");
+    throw std::runtime_error(
+        "GlobalAvgPoolNode: Input tensor X not found in iomap");
   }
 
   const GeneralDataTypes& x_tensor = x_it->second;
 
   std::visit(
       [&](const auto& x_ptr) {
-        using ValueType = typename std::decay_t<decltype(x_ptr)>::element_type::value_type;
+        using ValueType =
+            typename std::decay_t<decltype(x_ptr)>::element_type::value_type;
 
         if constexpr (!is_in_variant_v<ValueType, T>) {
           throw std::runtime_error(
@@ -50,7 +52,8 @@ void GlobalAvgPoolNode::forward(
           size_t rank = x_shape.size();
           if (rank < 3) {
             throw std::runtime_error(
-                "GlobalAvgPoolNode: Input tensor must have at least 3 dimensions (N, C, ...)");
+                "GlobalAvgPoolNode: Input tensor must have at least 3 "
+                "dimensions (N, C, ...)");
           }
 
           size_t batch = x_shape[0];

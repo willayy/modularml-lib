@@ -8,30 +8,45 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
+/**
+ * @class GlobalAvgPoolNode
+ * @brief A class representing a Global Average Pooling node in a computational
+ * graph.
+ *
+ * This node performs global average pooling on the input tensor, reducing
+ * spatial dimensions to 1x1 while computing the average of all values in each
+ * feature map. It's commonly used in convolutional neural networks to reduce
+ * spatial dimensions before fully connected layers.
+ */
 class GlobalAvgPoolNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in global average pooling
+   * operations
+   */
   using T = std::variant<float, double>;
 
   /**
    * @brief Constructor for GlobalAvgPoolNode.
    *
-   * @param X Input tensor name.
-   * @param Y Output tensor name.
+   * @param X Shared pointer to the input tensor.
+   * @param Y Shared pointer to the output tensor.
    */
-  GlobalAvgPoolNode(std::string X, std::string Y);
+  GlobalAvgPoolNode(const std::string &X, const std::string &Y);
 
   /**
-   * @brief Constructor for GlobalAvgPoolNode.
+   * @brief Constructor for GlobalAvgPoolNode from JSON.
    *
-   * @param node JSON object representing the MaxPool node.
+   * @param node JSON object representing the GlobalAveragePool node.
    */
-  GlobalAvgPoolNode(const nlohmann::json& node);
+  explicit GlobalAvgPoolNode(const nlohmann::json &node);
 
   /**
-   * @brief Perform the forward pass computation of AvgPoolNode.
+   * @brief Perform the forward pass computation of global average pooling.
    */
   void forward(
-      std::unordered_map<std::string, GeneralDataTypes>& iomap) override;
+      std::unordered_map<std::string, GeneralDataTypes> &iomap) override;
 
   /**
    * @brief Get inputs.
@@ -48,9 +63,6 @@ class GlobalAvgPoolNode : public Node {
   std::vector<std::string> getOutputs() override;
 
  private:
-  // Inputs
-  std::string X;
-
-  // Outputs
-  std::string Y;
+  std::string X;  // Input tensor X.
+  std::string Y;  // Output tensor Y.
 };

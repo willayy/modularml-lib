@@ -1,6 +1,5 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -8,6 +7,7 @@
 #include <initializer_list>
 #include <iostream>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <numeric>
 #include <optional>
 #include <random>

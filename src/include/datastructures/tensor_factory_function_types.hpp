@@ -23,5 +23,5 @@ using tensor_constructor_func_3 = std::function<std::shared_ptr<Tensor<T>>(
 template <TensorConcept::Types T>
 using tensor_constructor_func_4 = std::function<std::shared_ptr<Tensor<T>>(
     const std::initializer_list<size_t> shape)>;
-    
+
 }  // namespace tfft

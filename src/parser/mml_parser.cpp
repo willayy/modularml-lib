@@ -9,15 +9,14 @@
 // IWYU pragma: no_include <__vector/vector.h>
 #include <vector>  // IWYU pragma: keep
 
+#include "../include/model/mml_model.hpp"
 #include "../include/parser/mml_parser.hpp"
 #include "../include/parser/parser_helper.hpp"
-#include "../include/model/mml_model.hpp"
 #include "datastructures/a_tensor.hpp"
 #include "nlohmann/json.hpp"
 #include "nodes/a_node.hpp"
 #include "nodes/add.hpp"
 #include "nodes/avg_pool.hpp"
-#include "nodes/global_avg_pool.hpp"
 #include "nodes/constant.hpp"
 #include "nodes/conv.hpp"
 #include "nodes/dropout.hpp"
@@ -25,6 +24,7 @@
 #include "nodes/flatten.hpp"
 #include "nodes/gelu.hpp"
 #include "nodes/gemm.hpp"
+#include "nodes/global_avg_pool.hpp"
 #include "nodes/leaky_relu.hpp"
 #include "nodes/log_softmax.hpp"
 #include "nodes/lrn.hpp"
@@ -84,7 +84,8 @@ std::unordered_map<std::string, GeneralDataTypes> mapTensors(
           tensorMap[initName] = ParserHelper::handle_tensor<uint64_t>(init);
           break;
         default:
-          throw std::runtime_error(std::format("Currently unsupported data type: {}", dataType));
+          throw std::runtime_error(
+              std::format("Currently unsupported data type: {}", dataType));
       }
     }
   }

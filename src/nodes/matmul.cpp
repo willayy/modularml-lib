@@ -1,6 +1,7 @@
 #include "nodes/matmul.hpp"
 
-MatMulNode::MatMulNode(const std::string &A, const std::string &B, const std::string &Y)
+MatMulNode::MatMulNode(const std::string &A, const std::string &B,
+                       const std::string &Y)
     : A(A), B(B), Y(Y) {}
 
 MatMulNode::MatMulNode(const nlohmann::json &node) {

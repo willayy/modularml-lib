@@ -1,12 +1,11 @@
 #pragma once
-#include "datastructures/tensor_factory.hpp"
 #include "datastructures/array_utility.hpp"
 #include "datastructures/tensor_concept.hpp"
+#include "datastructures/tensor_factory.hpp"
 
 template <TensorConcept::Types T>
-std::shared_ptr<Tensor<T>>
-TensorFactory::create_tensor(const array_mml<size_t> &shape,
-                             const array_mml<T> &data) {
+std::shared_ptr<Tensor<T>> TensorFactory::create_tensor(
+    const array_mml<size_t> &shape, const array_mml<T> &data) {
   return tensor_constructor_1<T>(shape, data);
 }
 
@@ -17,8 +16,8 @@ void TensorFactory::set_tensor_constructor_1(
 }
 
 template <TensorConcept::Types T>
-std::shared_ptr<Tensor<T>>
-TensorFactory::create_tensor(const array_mml<size_t> &shape) {
+std::shared_ptr<Tensor<T>> TensorFactory::create_tensor(
+    const array_mml<size_t> &shape) {
   return tensor_constructor_2<T>(shape);
 }
 
@@ -29,9 +28,9 @@ void TensorFactory::set_tensor_constructor_2(
 }
 
 template <TensorConcept::Types T>
-std::shared_ptr<Tensor<T>>
-TensorFactory::create_tensor(const std::initializer_list<size_t> shape,
-                             const std::initializer_list<T> data) {
+std::shared_ptr<Tensor<T>> TensorFactory::create_tensor(
+    const std::initializer_list<size_t> shape,
+    const std::initializer_list<T> data) {
   return tensor_constructor_3<T>(shape, data);
 }
 
@@ -42,8 +41,8 @@ void TensorFactory::set_tensor_constructor_3(
 }
 
 template <TensorConcept::Types T>
-std::shared_ptr<Tensor<T>>
-TensorFactory::create_tensor(const std::initializer_list<size_t> shape) {
+std::shared_ptr<Tensor<T>> TensorFactory::create_tensor(
+    const std::initializer_list<size_t> shape) {
   return tensor_constructor_4<T>(shape);
 }
 
@@ -54,8 +53,8 @@ void TensorFactory::set_tensor_constructor_4(
 }
 
 template <TensorConcept::Types T>
-std::shared_ptr<Tensor<T>>
-TensorFactory::random_tensor(const array_mml<size_t> &shape, T lo_v, T hi_v) {
+std::shared_ptr<Tensor<T>> TensorFactory::random_tensor(
+    const array_mml<size_t> &shape, T lo_v, T hi_v) {
   size_t n = 1;
 
   for (const auto &dim : shape) {

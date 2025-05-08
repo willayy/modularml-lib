@@ -4,8 +4,8 @@
 #include <string>
 #include <variant>
 
-#include "nodes/a_node.hpp"
 #include "nlohmann/json_fwd.hpp"
+#include "nodes/a_node.hpp"
 
 /**
  * @class DropoutNode
@@ -16,8 +16,17 @@
  * True.
  */
 class DropoutNode : public Node {
-public:
+ public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported floating-point types in dropout operations
+   */
   using T = std::variant<double, float>;
+
+  /**
+   * @typedef T2
+   * @brief Type alias for supported boolean types in dropout mask operations
+   */
   using T2 = std::variant<bool>;
 
   /**
@@ -31,8 +40,8 @@ public:
    * @param seed Random seed, None by default.
    */
   DropoutNode(const std::string &data, const std::string &output,
-              const std::optional<std::string> &mask = std::nullopt, float ratio = 0.5,
-              bool training_mode = false,
+              const std::optional<std::string> &mask = std::nullopt,
+              float ratio = 0.5, bool training_mode = false,
               std::optional<int> seed = std::nullopt);
 
   /**
@@ -45,8 +54,8 @@ public:
   /**
    * @brief Perform the forward pass using dropout.
    */
-  void
-  forward(std::unordered_map<std::string, GeneralDataTypes> &iomap) override;
+  void forward(
+      std::unordered_map<std::string, GeneralDataTypes> &iomap) override;
 
   /**
    * @brief Get inputs.
@@ -62,16 +71,16 @@ public:
    */
   std::vector<std::string> getOutputs() override;
 
-private:
+ private:
   // Inputs
-  std::string data; // Input tensor.
+  std::string data;  // Input tensor.
 
   // Outputs
-  std::string output;              // Output tensor.
-  std::optional<std::string> mask; // Optional output tensor mask.
+  std::string output;               // Output tensor.
+  std::optional<std::string> mask;  // Optional output tensor mask.
 
   // Attributes
-  float ratio;             // Dropout ratio.
-  bool training_mode;      // Training mode.
-  std::optional<int> seed; // Random seed.
+  float ratio;              // Dropout ratio.
+  bool training_mode;       // Training mode.
+  std::optional<int> seed;  // Random seed.
 };

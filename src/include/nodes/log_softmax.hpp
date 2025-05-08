@@ -18,6 +18,11 @@
  */
 class LogSoftMaxNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported floating-point types in LogSoftMax
+   * operations
+   */
   using T = std::variant<float, double>;
 
   /**

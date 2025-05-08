@@ -24,21 +24,23 @@ std::unordered_map<std::string, GeneralDataTypes> Model_mml::infer(
   // Create a deep copy of iomap
   std::unordered_map<std::string, GeneralDataTypes> local_iomap;
   for (const auto &[name, tensor] : iomap) {
-    std::visit([&](auto &&arg) {
-      // Deep copy
-      local_iomap[name] = arg->copy();
-    },
-               tensor);
+    std::visit(
+        [&](auto &&arg) {
+          // Deep copy
+          local_iomap[name] = arg->copy();
+        },
+        tensor);
   }
 
   // Set input tensors
   for (const auto &[name, tensor] : inputs) {
     std::cout << "Setting input: " << name << std::endl;
-    std::visit([&](auto &&arg) {
-      // Deep copy
-      local_iomap[name] = arg->copy();
-    },
-               tensor);
+    std::visit(
+        [&](auto &&arg) {
+          // Deep copy
+          local_iomap[name] = arg->copy();
+        },
+        tensor);
   }
 
   // Process each layer

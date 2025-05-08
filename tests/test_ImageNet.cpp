@@ -70,11 +70,14 @@ std::string padNumber(int num, int width = 8) {
  * @brief Processes a range of ImageNet images, performs inference using a
  * pre-trained model, and evaluates the predictions against ground truth labels.
  *
- * @param startingindex The starting index of the images to process (inclusive). Must be > 0 and <= 50000.
- * @param endingindex The ending index of the images to process (inclusive). Must be >= startingindex and <= 50000.
- * @param modelpath The path to the pre-trained model file (default: "../alexnet.json").
- * @return std::pair<size_t, size_t> A pair containing the number of successful predictions (first)
- *         and the number of failed predictions (second).
+ * @param startingindex The starting index of the images to process (inclusive).
+ * Must be > 0 and <= 50000.
+ * @param endingindex The ending index of the images to process (inclusive).
+ * Must be >= startingindex and <= 50000.
+ * @param modelpath The path to the pre-trained model file (default:
+ * "../alexnet.json").
+ * @return std::pair<size_t, size_t> A pair containing the number of successful
+ * predictions (first) and the number of failed predictions (second).
  *
  * @throws std::invalid_argument If:
  *         - endingindex < startingindex
@@ -105,7 +108,9 @@ std::string padNumber(int num, int width = 8) {
  * @warning Ensure that the file paths and required resources are correctly set
  * up before calling this function.
  */
-std::pair<size_t, size_t> imageNet(const size_t startingindex, const size_t endingindex, const std::string& modelpath = "../alexnet.json") {
+std::pair<size_t, size_t> imageNet(
+    const size_t startingindex, const size_t endingindex,
+    const std::string& modelpath = "../alexnet.json") {
   if (endingindex < startingindex) {
     throw std::invalid_argument(
         "Ending index must be larger than starting index");
@@ -203,8 +208,9 @@ std::pair<size_t, size_t> imageNet(const size_t startingindex, const size_t endi
   return {success, failure};
 }
 
-TEST(test_ImageNet, get_caffe_label) {
-  std::string labelPath = "data/imagenet/ILSVRC2012_validation_ground_truth.json";
+TEST(test_get_caffe_label, get_caffe_label) {
+  std::string labelPath =
+      "data/imagenet/ILSVRC2012_validation_ground_truth.json";
   auto label1 = "ILSVRC2012_val_" + padNumber(1) + ".JPEG";
   auto label2 = "ILSVRC2012_val_" + padNumber(2) + ".JPEG";
 
@@ -240,10 +246,12 @@ TEST(test_imageNet, imageNet_resnet18) {
 
   auto result = imageNet(1, 60, "../resnet18.json");
 
-  float success_rate = static_cast<float>(result.first) / (result.first + result.second);
+  float success_rate =
+      static_cast<float>(result.first) / (result.first + result.second);
 
-  std::cout << "Success: " << result.first << ", Failure: " << result.second << std::endl;
+  std::cout << "Success: " << result.first << ", Failure: " << result.second
+            << std::endl;
   std::cout << "Success Rate: " << success_rate * 100 << "%" << std::endl;
   GTEST_LOG_(INFO) << "Success Rate: " << success_rate * 100 << "%";
-  EXPECT_GE(success_rate, 0.60f); // allow for some margin below 69%
+  EXPECT_GE(success_rate, 0.60f);  // allow for some margin below 69%
 }

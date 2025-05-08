@@ -11,8 +11,16 @@
 #include "nlohmann/json_fwd.hpp"
 #include "nodes/a_node.hpp"
 
+/**
+ * @class MaxPoolNode
+ * @brief Class representing a Max Pooling operation in a computational graph.
+ */
 class MaxPoolNode : public Node {
  public:
+  /**
+   * @typedef T
+   * @brief Type alias for supported numeric types in MaxPool operations
+   */
   using T = std::variant<float, double, int8_t, uint8_t>;
 
   /**
@@ -24,28 +32,31 @@ class MaxPoolNode : public Node {
    * @param auto_pad Padding type (default: "NOTSET").
    * @param ceil_mode Ceil mode (default: 0).
    * @param kernel_shape Kernel shape.
+   * @param dilations Dilation values.
    * @param pads Padding values.
    * @param storage_order Storage order (default: 0).
    * @param strides Stride values.
    */
-  MaxPoolNode(const std::string &X, const std::string &Y, const std::vector<int> &kernel_shape,
+  MaxPoolNode(const std::string &X, const std::string &Y,
+              const std::vector<int> &kernel_shape,
               const std::optional<std::string> &indices = std::nullopt,
               const std::string &auto_pad = "NOTSET", int ceil_mode = 0,
-              const std::vector<int> &dilations = {}, const std::vector<int> &pads = {},
-              int storage_order = 0, const std::vector<int> &strides = {});
+              const std::vector<int> &dilations = {},
+              const std::vector<int> &pads = {}, int storage_order = 0,
+              const std::vector<int> &strides = {});
 
   /**
    * @brief Constructor for MaxPoolNode.
    *
    * @param node JSON object representing the MaxPool node.
    */
-  explicit MaxPoolNode(const nlohmann::json& node);
+  explicit MaxPoolNode(const nlohmann::json &node);
 
   /**
    * @brief Perform the forward pass computation of MaxPool.
    */
   void forward(
-      std::unordered_map<std::string, GeneralDataTypes>& iomap) override;
+      std::unordered_map<std::string, GeneralDataTypes> &iomap) override;
 
   /**
    * @brief Get inputs.

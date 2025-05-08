@@ -10,13 +10,17 @@
  * @class TanHNode
  * @brief A class representing a TanH node in a computational graph.
  *
- * This class inherits from the Node class and represents the TanH
- * activation in a computational graph. It performs the forward
- * pass computation applying std::tanh elementwise.
+ * This class inherits from the Node class and represents the hyperbolic tangent
+ * activation function in a computational graph. It performs the forward pass
+ * computation by applying tanh elementwise to the input tensor.
  */
 class TanHNode : public Node {
  public:
-  using T = std::variant<double, float>;
+  /**
+   * @typedef T
+   * @brief Type alias for supported floating-point types in TanH operations
+   */
+  using T = std::variant<float, double>;
 
   /**
    * @brief Constructor for TanHNode.

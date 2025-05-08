@@ -16,7 +16,12 @@
  */
 class SwishNode : public Node {
  public:
-  using T = std::variant<double, float>;
+  /**
+   * @typedef T
+   * @brief Type alias for supported floating-point types in Swish operations
+   */
+  using T = std::variant<float, double>;
+
   /**
    * @brief Constructor for SwishNode.
    *

@@ -45,7 +45,7 @@ modularml optionally uses [IWYU](https://include-what-you-use.org/) for include 
 modularml uses [Git](https://git-scm.com/) as the version control system and [GitHub](https://docs.github.com/en) as the remote repository storage.
 
 ## Formatting
-modularml uses Clang format with 2 spaces.
+modularml uses Clang format Google flavor with 2 spaces.
 
 ## Commits
 Write your commit message in the imperative: "Fix bug" and not "Fixed

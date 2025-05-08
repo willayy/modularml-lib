@@ -33,7 +33,7 @@ std::shared_ptr<Tensor<float>> ImageLoader::load(
     throw std::invalid_argument("Failed to load image: " +
                                 image_config.image_path);
   }
-  
+
   // Trust
   int output_channels = channels;
 

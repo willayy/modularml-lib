@@ -12,9 +12,11 @@
 
 #include "nlohmann/json.hpp"
 
-ConvNode::ConvNode(const std::string &X, const std::string &W, const std::string &Y,
-                   const array_mml<size_t> &dilations, const array_mml<size_t> &padding,
-                   const array_mml<size_t> &kernel_shape, const array_mml<size_t> &stride,
+ConvNode::ConvNode(const std::string &X, const std::string &W,
+                   const std::string &Y, const array_mml<size_t> &dilations,
+                   const array_mml<size_t> &padding,
+                   const array_mml<size_t> &kernel_shape,
+                   const array_mml<size_t> &stride,
                    const std::optional<std::string> &B, size_t group)
     : X(X),
       W(W),

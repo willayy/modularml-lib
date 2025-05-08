@@ -26,7 +26,6 @@
 template <typename T>
 class array_mml {
  public:
-
   static_assert(std::is_arithmetic_v<T>,
                 "array_mml must have an arithmetic type.");
 

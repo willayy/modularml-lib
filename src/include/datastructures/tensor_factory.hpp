@@ -24,8 +24,8 @@
 #include "datastructures/tensor_concept.hpp"
 #include "mml_array.hpp"
 #include "mml_tensor.hpp"
-#include "tensor_factory_function_types.hpp"
 #include "tensor_concept.hpp"
+#include "tensor_factory_function_types.hpp"
 #include "tensor_factory_functions.hpp"
 
 /**
@@ -112,7 +112,8 @@ class TensorFactory {
    * constructor.
    */
   template <TensorConcept::Types... Ts>
-  static void set_tensor_constructor_4(tfft::tensor_constructor_func_4<Ts>... tensor_constructor);
+  static void set_tensor_constructor_4(
+      tfft::tensor_constructor_func_4<Ts>... tensor_constructor);
 
   /**
    * @brief Creates a tensor with the specified shape and data.

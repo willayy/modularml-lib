@@ -15,9 +15,9 @@
 #include "datastructures/mml_array.hpp"
 #include "nlohmann/json.hpp"
 
-GemmNode::GemmNode(const std::string &A, const std::string &B, const std::string &Y,
-                   const std::optional<std::string> &C, float alpha, float beta,
-                   int transA, int transB)
+GemmNode::GemmNode(const std::string &A, const std::string &B,
+                   const std::string &Y, const std::optional<std::string> &C,
+                   float alpha, float beta, int transA, int transB)
     : A(A),
       B(B),
       C(C),

@@ -51,18 +51,19 @@ class ImageLoader : public DataLoader<float> {
    * @param config The configuration object used to load the image
    * @return A std::shared_ptr to a Tensor containing the loaded data.
    */
-  std::shared_ptr<Tensor<float>> load(const DataLoaderConfig &config) const override;
+  std::shared_ptr<Tensor<float>> load(
+      const DataLoaderConfig &config) const override;
 
   /**
    * @brief Loads a raw image buffer into a tensor representation.
-   * 
-   * This function takes a raw image buffer as input and converts it into a 
-   * tensor of type `float`. The tensor can then be used for further processing 
+   *
+   * This function takes a raw image buffer as input and converts it into a
+   * tensor of type `float`. The tensor can then be used for further processing
    * in machine learning or other computational tasks.
-   * 
-   * @param raw The raw image buffer to be loaded. It contains the image data 
+   *
+   * @param raw The raw image buffer to be loaded. It contains the image data
    *            that needs to be converted into a tensor.
-   * @return A shared pointer to a `Tensor<float>` object containing the 
+   * @return A shared pointer to a `Tensor<float>` object containing the
    *         processed image data.
    */
   std::shared_ptr<Tensor<float>> load(const RawImageBuffer &raw) const;

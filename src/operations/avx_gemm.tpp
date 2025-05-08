@@ -1,5 +1,5 @@
-#include "operations/avx_gemm.hpp"
 #include "datastructures/tensor_concept.hpp"
+#include "operations/avx_gemm.hpp"
 
 #if defined(USE_AVX_GEMM) || defined(USE_AVX512_GEMM)
 #include <immintrin.h>

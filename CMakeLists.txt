@@ -247,7 +247,7 @@ endif()
 # Create coverage target
 add_custom_target(coverage_report
     ALL
-    COMMAND cd ${PROJECT_BINARY_DIR} && ctest -V -j ${N}
+    COMMAND cd ${PROJECT_BINARY_DIR} && ctest --quiet --output-on-failure -j ${N}
     COMMAND ${GCOVR_EXECUTABLE} ${PROJECT_BINARY_DIR}/CMakeFiles/modularml_tests.dir/tests -r ${PROJECT_SOURCE_DIR}/src --html --html-details --csv -o ${PROJECT_BINARY_DIR}/coverage_report/
 )
 
@@ -312,6 +312,33 @@ else()
     message(WARNING "include-what-you-use not found. Skipping IWYU.")
 endif()
 
+# ------------------- External tools versions ------------------------- #
+if(DOXYGEN_FOUND)
+    execute_process(
+        COMMAND ${DOXYGEN_EXECUTABLE} --version
+        OUTPUT_VARIABLE DOXYGEN_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    message(STATUS "Doxygen version: ${DOXYGEN_VERSION}")
+endif()
+
+if(GCOVR_EXECUTABLE)
+    execute_process(
+        COMMAND ${GCOVR_EXECUTABLE} --version
+        OUTPUT_VARIABLE GCOVR_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    message(STATUS "gcovr version: ${GCOVR_VERSION}")
+endif()
+
+if(iwyu)
+    execute_process(
+        COMMAND ${iwyu} --version
+        OUTPUT_VARIABLE IWYU_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    message(STATUS "include-what-you-use version: ${IWYU_VERSION}")
+endif()
 # ------------------- Cmake messages -------------------------------- #
 message(STATUS "CMake version: ${CMAKE_VERSION}")
 message(STATUS "CMake generator: ${CMAKE_GENERATOR}")

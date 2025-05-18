@@ -258,8 +258,7 @@ add_dependencies(coverage_report ${PROJECT_NAME}_tests)
 
 # Find Doxygen and other dependencies
 find_package(Doxygen
-             REQUIRED dot
-             OPTIONAL_COMPONENTS mscgen dia)
+             OPTIONAL_COMPONENTS mscgen dia dot)
 
 if(DOXYGEN_FOUND)
     message(STATUS "Doxygen found at ${DOXYGEN_EXECUTABLE}")
